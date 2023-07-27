@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+.main{
+    width:80%;
+    height: auto;
+    min-height:350px;
+    padding:40px;
+    border-radius: 30px;
+    box-shadow: 0px 0px 11px 4px rgba(202, 13, 139, 0.25);
+    background: linear-gradient(to right, #8f94fb, #4e54c8);
+    margin: auto;
+  }
+body{
+    background-color:burlywood;
+    padding: 20px;
+}
+form{
+  background-color:antiquewhite;
+  padding: 20px;
+  border-radius: 20px;
+}
+form label {
+    display: block;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    color:black;
+  }
+  #short{
+    background-color:darksalmon;
+    color:brown;
+    border: 3 px solid black;
+    border-radius: 15px;
+    padding: 5px 20px;
+    cursor:grabbing;
+    font-size: 20px;
+    margin-top: 20px;
+  }
+  form input[type="text"] {
+    width: 90%;
+    padding: 10px;
+    margin:auto;
+    border-radius: 20px;
+    border:2px solid #8f94fb;
+    box-shadow: 0px 0px 11px 4px rgba(0, 0, 0, 0.25);
+  }
+  form label{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: 300;
+    font-size: larger;
+  }
+  #shorturlbox{
+    margin-top: 20px;
+    align-items: center;
+    background-color:blanchedalmond;
+    height: 100px;
+    border-radius: 20px;
+    width: 50%;
+  }
+  #shorturl {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #shorturl a {
+    word-wrap: break-word;
+    margin-right: 10px;
+    color: black;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  }
+  .para{
+    padding: 10px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin-left: 60px;
+  }
+  #copybutton{
+    border-radius: 15px;
+    border: 3px solid sandybrown;
+    background-color:coral;
+    padding: 5px;
+    cursor: grab;
+  }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <form >
+            <label for="input">Enter / Paste the URL</label>
+            <input type="text" id="input">
+            <button type="button" id="short"> Shorten </button>
+        </form>
+        <div id="shorturlbox" style="display:none">
+            <p class="para">Here goes your shorted URL !!!!</p>
+            <div id="shorturl">
+                <a href="" target="_blank"></a>
+                <button type="button" id="copybutton">Copy To Clipboard</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+const shortenurl=async()=>{
+    const input=document.querySelector("#input").value
+    const response=await fetch(`https://api.shrtco.de/v2/shorten?url=${input}`)
+    const data= await response.json()
+    const shorturl=data.result.full_short_link
+
+    const shorturlbox=document.getElementById("shorturlbox")
+    const resulturl=document.getElementById("shorturl").querySelector('a')
+    resulturl.href=shorturl
+    resulturl.textContent=shorturl
+    shorturlbox.style.display='block'
+    const copybutton=document.getElementById("copybutton")
+    copybutton.addEventListener('click',()=>{
+        navigator.clipboard.writeText(resulturl).then(() => {
+        alert('Copied to clipboard!');
+    })
+})
+}
+const shortbtn=document.getElementById('short')
+shortbtn.addEventListener('click',shortenurl)
+</script>
+</html>
